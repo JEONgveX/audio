@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LexiCluster 음성 저장소</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--tx:#1d2733;--mu:#667085;--br:#d0d5dd}
+@media(prefers-color-scheme:dark){:root{--bg:#12161b;--card:#1b2128;--tx:#e8edf2;--mu:#98a2b3;--br:#2f3a46}}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.6 system-ui,"Malgun Gothic",sans-serif}
+main{max-width:640px;margin:0 auto;padding:24px 16px}
+table{width:100%;border-collapse:collapse;background:var(--card)}th,td{border:1px solid var(--br);padding:6px 8px;text-align:left}
+.mu{color:var(--mu);font-size:13px}
+</style></head><body><main>
+<h1>LexiCluster 음성 저장소 ✅</h1>
+<p class="mu">이 페이지가 보이면 GitHub Pages가 정상이에요. 아래는 올라가 있는 음성 파일 수예요.</p>
+<table id="t"><tr><th>국가</th><th>목소리</th><th>수능 듣기</th><th>예문</th></tr></table>
+<p class="mu" id="m">불러오는 중…</p>
+</main><script>
+(async () => {
+  const t = document.getElementById('t'), rows = {};
+  for (const ac of ['US', 'GB', 'AU']) for (const [k, col] of [['', 'c'], ['ex-', 'e']]) {
+    try { const r = await fetch(`manifest-${k}${ac}.json`, { cache: 'no-cache' }); if (!r.ok) continue;
+      const j = await r.json(); Object.entries(j.voices || {}).forEach(([v, a]) => { const x = rows[ac + v] || (rows[ac + v] = { ac, v, c: 0, e: 0 }); x[col] = a.length; }); } catch (e) {}
+  }
+  Object.values(rows).forEach(x => t.insertAdjacentHTML('beforeend', `<tr><td>${x.ac}</td><td>${x.v}</td><td>${x.c}</td><td>${x.e}</td></tr>`));
+  document.getElementById('m').textContent = Object.keys(rows).length ? '' : '목록(manifest)을 찾지 못했어요.';
+})();
+</script></body></html>
